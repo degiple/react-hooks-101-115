@@ -1,23 +1,32 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 const App = props => {
-  console.log('App loading')
+  //console.log('App loading')
 
   const [states, setStates] = useState(props)
+  const { name, price } = states
+
+  useEffect(() => {
+    console.log('Always useEffect')
+  })
+
+  useEffect(() => {
+    console.log('Only useEffect')
+  }, [])
+
+  useEffect(() => {
+    console.log('This callback is for name only')
+  }, [name])
 
   return (
     <>
       <p>
         現在の{states.name}は、{states.price}円です。
       </p>
-      <div>
-        <button onClick={() => setStates({ ...states, price: states.price + 1 })}>+1</button>
-        <button onClick={() => setStates({ ...states, price: states.price - 1 })}>-1</button>
-        <button onClick={() => setStates(props)}>reset</button>
-      </div>
-      <div>
-        <input value={states.name} onChange={e => setStates({ ...states, name: e.target.value })} />
-      </div>
+      <button onClick={() => setStates({ ...states, price })}>+1</button>
+      <button onClick={() => setStates({ ...states, price })}>-1</button>
+      <button onClick={() => setStates(props)}>reset</button>
+      <input value={name} onChange={e => setStates({ ...states, name: e.target.value })} />
     </>
   )
 }
