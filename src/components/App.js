@@ -11,6 +11,8 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
 
+  const unCreatable = title === '' || body === ''
+
   const addEvent = e => {
     e.preventDefault()
     //console.log('addEvent: ', { title, body })
@@ -23,7 +25,13 @@ const App = () => {
     setBody('')
   }
 
-  //console.log(state)
+  const deleteAllEvents = e => {
+    e.preventDefault()
+    const result = window.confirm(
+      '全てのイベントを本当に削除しても宜しいでしょうか？'
+    )
+    if (result) dispatch({ type: 'DELETE_ALL_EVENTS' })
+  }
 
   return (
     <div className="container-fluid">
@@ -47,10 +55,20 @@ const App = () => {
             onChange={e => setBody(e.target.value)}
           />
         </div>
-        <button className="btn btn-primary" onClick={addEvent}>
+        <button
+          className="btn btn-primary"
+          onClick={addEvent}
+          disabled={unCreatable}
+        >
           イベントを作成する
         </button>
-        <button className="btn btn-danger">全てのイベントを削除する</button>
+        <button
+          className="btn btn-danger"
+          onClick={deleteAllEvents}
+          disabled={state.length === 0}
+        >
+          全てのイベントを削除する
+        </button>
       </form>
 
       <h4>イベント一覧</h4>
@@ -67,30 +85,6 @@ const App = () => {
           {state.map((event, index) => {
             return <Event key={index} event={event} dispatch={dispatch} />
           })}
-          {/* {state.map((event, index) => {
-            const handleClickDeleteButton = () => {
-              dispatch({
-                type: 'DELETE_EVENT',
-                id: event.id
-              })
-            }
-            return (
-              <tr key={index}>
-                <td>{event.id}</td>
-                <td>{event.title}</td>
-                <td>{event.body}</td>
-                <td>
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={handleClickDeleteButton}
-                  >
-                    削除
-                  </button>
-                </td>
-              </tr>
-            )
-          })} */}
         </tbody>
       </table>
     </div>
