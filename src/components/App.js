@@ -6,7 +6,7 @@ import AppContext from '../contexts/AppContext'
 import reducer from '../reducers'
 import EventForm from './EventForm'
 import EventList from './EventList'
-import operationLogs from '../reducers/operationLogs'
+import OperationLogList from './OperationLogList'
 
 const App = () => {
   const initialState = {
@@ -23,6 +23,8 @@ const App = () => {
         <EventForm />
         <h4>イベント一覧</h4>
         <EventList />
+        <h4>操作ログ一覧</h4>
+        <OperationLogList />
       </div>
     </AppContext.Provider>
   )
