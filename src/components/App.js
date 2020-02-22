@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useEffect } from 'react'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -8,13 +8,22 @@ import EventForm from './EventForm'
 import EventList from './EventList'
 import OperationLogList from './OperationLogList'
 
+const APP_KEY = 'appWithRedux'
+
 const App = () => {
-  const initialState = {
-    events: [],
-    operationLogs: []
-  }
+  const localState = localStorage.getItem(APP_KEY)
+  const initialState = localState
+    ? JSON.parse(localState)
+    : {
+        events: [],
+        operationLogs: []
+      }
 
   const [state, dispatch] = useReducer(reducer, initialState)
+
+  useEffect(() => {
+    localStorage.setItem(APP_KEY, JSON.stringify(state))
+  }, [state])
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>
